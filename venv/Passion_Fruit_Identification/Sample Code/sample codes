@@ -1,0 +1,50 @@
+#get all images in the folder
+
+img_dir = "../images/"  # Enter Directory of all images
+        data_path = os.path.join(img_dir, '*.jpg')
+        files = glob.glob(data_path)
+        data = []
+        for f1 in files:
+            img = cv2.imread(f1)
+            data.append(img)
+        print(len(data))
+
+
+# load a colour image
+img1 = cv2.imread("./images/img_1.jpg")
+#resize the image
+resized_image = cv2.resize(img1,(400,600))
+#convert RGB to Lab
+lab_image = cv2.cvtColor(resized_image,cv2.COLOR_RGB2Lab)
+display image
+cv2.imshow('image',lab_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+cv2.imwrite('./images/lab_img1.png',lab_image)
+
+#GUI
+        def NewFile():
+            print("New File!")
+
+        def OpenFile():
+            name = askopenfilename()
+            print(name)
+
+        def About():
+            print("This is a simple example of a menu")
+
+        root = Tk()
+        root.geometry("1000x600")
+        root.title("Passion Fruit Disease Identification")
+        menu = Menu(root)
+        root.config(menu=menu)
+        filemenu = Menu(menu)
+        menu.add_cascade(label="File", menu=filemenu)
+        filemenu.add_command(label="New", command=NewFile)
+        filemenu.add_command(label="Open...", command=OpenFile)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=root.quit)
+
+        theLabel = Label(root, text="Image processing window")
+        theLabel.pack()
+        root.mainloop()
