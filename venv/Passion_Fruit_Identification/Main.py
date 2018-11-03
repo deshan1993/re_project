@@ -60,49 +60,65 @@ class Main:
         def test():
             feature.test()
 
+
+
         def featureExtract():
 
-            features_list = []
+            #lists for store features vector values
+            lab_features_list = []
+            hsv_features_list = []
+            gray_features_list = []
+
             startIndex = 0
             endIndex = 0
             arrayLength = 0
             count = 0
+            folderPathIndex = 0 # identify the folder path
 
-            foldersPath = ["../Images/Segmented_Images/Original/",
-                          "../Images/Segmented_Images/Lab/",
-                          "../Images/Segmented_Images/HSV/",
-                          "../Images/Segmented_Images/Gray/"]
+            # get all images folder paths to feature extraction
+            # foldersPath = ["../Images/Segmented_Images/Original/",
+            #               "../Images/Segmented_Images/Lab/",
+            #               "../Images/Segmented_Images/HSV/",
+            #               "../Images/Segmented_Images/Gray/"]
+
+            foldersPath = ["../Images/Segmented_Images/Lab/",
+                           "../Images/Segmented_Images/HSV/",
+                           "../Images/Segmented_Images/Gray/"]
 
             for folderPath in foldersPath:
+                if folderPath == "../Images/Segmented_Images/Lab/":
+                    folderPathIndex = 1
+                if folderPath == "../Images/Segmented_Images/HSV/":
+                    folderPathIndex = 2
+                if folderPath == "../Images/Segmented_Images/Gray/":
+                    folderPathIndex = 3
+
                 imagesName = gettingImages(folderPath)
                 for imageName in imagesName:
                     count = count + 1
                     count1 = 0
-                    # feature.GetFeatureValues(image_name=imageName, image_path=folderPath)
-                    #print("path = " + folderPath + "   " + imageName)
+
                     feature_array = feature.FeatureExtraction(img_name=imageName, img_path=folderPath)
+
                     arrayLength = len(feature_array)*count
                     endIndex = arrayLength - 1
                     startIndex = endIndex - 256
-                    print("startIndex = "+str(startIndex)+", endIndex = "+str(endIndex)+", arrayLength = "+str(arrayLength))
-                    #j = (endIndex - (257*count)) + 1
+                    # print("startIndex = "+str(startIndex)+", endIndex = "+str(endIndex)+", arrayLength = "+str(arrayLength))
+
                     for i in range(startIndex, endIndex+1):
                         if count1 == 257*count:
                             count1 = 0
-                        #print(str(i)+" = "+str(feature_array[count1]))
-                        features_list.insert(i, feature_array[count1])
+                        # print(str(i) + " = " + str(feature_array[count1]))
+                        if folderPathIndex == 1:
+                            lab_features_list.insert(i, feature_array[count1])
+                        if folderPathIndex == 2:
+                            hsv_features_list.insert(i, feature_array[count1])
+                        if folderPathIndex == 3:
+                            gray_features_list.insert(i, feature_array[count1])
                         count1 = count1 + 1
-                        #print(str(i)+" = "+str(feature_array[((endIndex - (257*count)) + 1 +i)]))
-                        # features_list.insert(i, feature_array[((endIndex - (257*count)) + 1 +i)])
-                    #return features_list
                     #messagebox.showinfo("Success", "Successfully features were extracted")
-
-            with open('../Features/feature_file.txt', 'w') as filehandle:
-                #filehandle.write('%s=>' % img)
-                    for x in features_list:
-                        filehandle.write('%s,' % x[0])
-                    filehandle.write('\n')
-            #print(features_list)
+            feature.CreateFeaturesMultiDimentionList(lab_features_list)
+            #print(len(lab_features_list))
 
 
         preprocess_btn = Button(text="Preprocessing", command = preprocess)

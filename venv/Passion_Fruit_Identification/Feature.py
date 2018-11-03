@@ -115,5 +115,62 @@ class Feature(object):
             for row in person:
                 writer.writerow(row)
 
+    # make multidimentional list to store feature values
+    def CreateFeaturesMultiDimentionList(self, *arr):
+        featureList = []
+        lengthOfArray = len(arr[0])
+        count = int(lengthOfArray / 257)
+        count1 = 0
+
+        indexNo = 0
+        countArray = []
+        for x in range(0,count):
+            countArray.insert(x, indexNo)
+            indexNo = indexNo + 1
+        print(countArray)
+
+        indexNum = 0
+        titleArray = []
+        for x in range(0, 257):
+            if x == 0:
+                titleArray.insert(x, "ImageName")
+            else:
+                title = 'value' + str(indexNum)
+                titleArray.insert(x, title)
+            indexNum = indexNum + 1
+        print(titleArray)
+
+        startIndex = 0
+        endIndex = 257
+        for i in countArray:
+            featureList.append([])
+            if i * 257 == startIndex:
+                count1 = 0
+            print("startIndex"+str(startIndex))
+            for j in range(startIndex, endIndex):
+                if i == 0:
+                    featureList[0].append(titleArray[j])
+                else:
+                    featureList[i].append(arr[0][j])
+                #print("index ="+str(count1)+" "+str(arr[0][j]))
+                count1 = count1 + 1
+            startIndex = startIndex + 257
+            endIndex = endIndex + 257
+
+        print(featureList)
+
+        # for i in range(0,257):
+        #     featureList.append([])
+        #     featureList.insert(i, arr[0][i])
+        #     # for j in range(startIndex, endIndex):
+        #     #     featureList[]
+        # print(featureList)
+
+        # arr = []
+        # arr.append([])
+        # arr[0].append('aa1')
+        # arr[0].append('aa2')
+
+
 
         
