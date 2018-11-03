@@ -1,6 +1,7 @@
 import cv2 as cv2
 import numpy as np
 import matplotlib as plt
+import csv
 
 class Feature(object):
     
@@ -57,13 +58,62 @@ class Feature(object):
                 # print(img_lbp[i,j])
         hist_lbp = cv2.calcHist([img_lbp], [0], None, [256], [0, 256])
 
-        with open('../Features/feature_file.txt', 'w') as filehandle:
-            filehandle.write('%s=>' % img)
-            for x in hist_lbp:
-                filehandle.write('%s,' % x[0])
-            filehandle.write('\n')
+        # with open('../Features/features.csv', 'wb') as csvfile:
+        #     filewriter = csv.writer(csvfile, delimiter=',',
+        #                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        #     filewriter.writerow(['Name', 'Profession'])
+        #     filewriter.writerow(['Derek', 'Software Developer'])
+        #     filewriter.writerow(['Steve', 'Software Developer'])
+        #     filewriter.writerow(['Paul', 'Manager'])
 
-        print(img)
-        print(hist_lbp)
-        print("------------------------------------------")
+        image_feature_array = []
+        image_feature_array.insert(0,img)
+        for i in range(1,257):
+            image_feature_array.insert(i,hist_lbp[i-1][0])
+        return image_feature_array # image name + 256 textures
+
+        # with open('../Features/features.csv', 'w') as filehandle:
+        #     filehandle.write('%s=>' % img)
+        #     for x in hist_lbp:
+        #         filehandle.write('%s,' % x[0])
+        #     filehandle.write('\n')
+        #
+        # print(img)
+        # print(hist_lbp)
+        # print("------------------------------------------")
+
+    # get all images features values into one list
+    def GetFeatureValues(self, image_name, image_path):
+        img_name = image_name
+        img_path = image_path
+        features_list = []
+        startIndex = 0
+        endIndex = 0
+        arrayLength = 0
+
+        feature_array = Feature.FeatureExtraction(self,img_name,img_path)
+        arrayLength = len(feature_array)
+        endIndex = endIndex + arrayLength
+        for i in range(startIndex, endIndex):
+            features_list.insert(i, feature_array[i])
+        return features_list
+
+    def test(self):
+        person = [['SN', 'Person', 'DOB'],
+                  ['1', 'John', '18/1/1997'],
+                  ['2', 'Marie', '19/2/1998'],
+                  ['3', 'Simon', '20/3/1999'],
+                  ['4', 'Erik', '21/4/2000'],
+                  ['5', 'Ana', '22/5/2001']]
+
+        csv.register_dialect('myDialect',
+                             quoting=csv.QUOTE_ALL,
+                             skipinitialspace=True)
+
+        with open('../Features/features.csv', 'w') as f:
+            writer = csv.writer(f, dialect='myDialect')
+            for row in person:
+                writer.writerow(row)
+
+
         
