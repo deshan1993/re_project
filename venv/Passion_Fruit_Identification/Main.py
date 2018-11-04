@@ -68,12 +68,15 @@ class Main:
             lab_features_list = []
             hsv_features_list = []
             gray_features_list = []
+            original_features_list = []
 
             startIndex = 0
             endIndex = 0
             arrayLength = 0
             count = 0
             folderPathIndex = 0 # identify the folder path
+            csvFilePathIndex = [] # identify csv file path
+            success = 2
 
             # get all images folder paths to feature extraction
             # foldersPath = ["../Images/Segmented_Images/Original/",
@@ -83,7 +86,8 @@ class Main:
 
             foldersPath = ["../Images/Segmented_Images/Lab/",
                            "../Images/Segmented_Images/HSV/",
-                           "../Images/Segmented_Images/Gray/"]
+                           "../Images/Segmented_Images/Gray/",
+                           "../Images/Segmented_Images/Original/"]
 
             for folderPath in foldersPath:
                 if folderPath == "../Images/Segmented_Images/Lab/":
@@ -92,6 +96,8 @@ class Main:
                     folderPathIndex = 2
                 if folderPath == "../Images/Segmented_Images/Gray/":
                     folderPathIndex = 3
+                if folderPath == "../Images/Segmented_Images/Original/":
+                    folderPathIndex = 4
 
                 imagesName = gettingImages(folderPath)
                 for imageName in imagesName:
@@ -111,13 +117,35 @@ class Main:
                         # print(str(i) + " = " + str(feature_array[count1]))
                         if folderPathIndex == 1:
                             lab_features_list.insert(i, feature_array[count1])
+                            csvFilePathIndex.insert(0, 1)
                         if folderPathIndex == 2:
                             hsv_features_list.insert(i, feature_array[count1])
+                            csvFilePathIndex.insert(1, 2)
                         if folderPathIndex == 3:
                             gray_features_list.insert(i, feature_array[count1])
+                            csvFilePathIndex.insert(2, 3)
+                        if folderPathIndex == 4:
+                            original_features_list.insert(i, feature_array[count1])
+                            csvFilePathIndex.insert(3, 4)
                         count1 = count1 + 1
                     #messagebox.showinfo("Success", "Successfully features were extracted")
-            feature.CreateFeaturesMultiDimentionList(lab_features_list)
+
+            # pass the lab feature list to create multidimensional list with titles
+            success = feature.CreateFeaturesMultiDimentionList(lab_features_list, folderPath= csvFilePathIndex[0])
+            feature.csvFileCreationNotificationMessage(successIndex=success, category=csvFilePathIndex[0])
+
+            # pass the hsv feature list to create multidimensional list with titles
+            success = feature.CreateFeaturesMultiDimentionList(hsv_features_list, folderPath= csvFilePathIndex[1])
+            feature.csvFileCreationNotificationMessage(successIndex=success, category=csvFilePathIndex[1])
+
+            # pass the gray feature list to create multidimensional list with titles
+            success = feature.CreateFeaturesMultiDimentionList(gray_features_list, folderPath= csvFilePathIndex[2])
+            feature.csvFileCreationNotificationMessage(successIndex=success, category=csvFilePathIndex[2])
+
+            # pass the original images features list to create multidimensional list with titles
+            success = feature.CreateFeaturesMultiDimentionList(original_features_list, folderPath=csvFilePathIndex[3])
+            feature.csvFileCreationNotificationMessage(successIndex=success, category=csvFilePathIndex[3])
+
             #print(len(lab_features_list))
 
 
