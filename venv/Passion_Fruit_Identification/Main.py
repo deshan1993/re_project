@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter import messagebox
 from Image import Image
 from Feature import Feature
+from Label import Label
 
 class Main:
 
@@ -14,6 +15,7 @@ class Main:
 
         image = Image()
         feature = Feature()
+        label = Label()
 
         #GUI
         root = tkinter.Tk()
@@ -58,7 +60,7 @@ class Main:
 
         #tset
         def test():
-            feature.test()
+            label.allocateLabel()
 
 
 

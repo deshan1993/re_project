@@ -67,7 +67,20 @@ class Feature(object):
         return image_feature_array # image name + 256 textures
 
     def test(self):
-       print("test")
+        img = 'img_1_2_3.jpg'
+        x = '_'.join(img.split('_',2)[:2])
+        #x = img.split('_',2)[:2]
+
+        x = 'img_4'
+
+        arr = {}
+        arr['img_1'] = 111000
+        arr['img_2'] = 101111
+        arr['img_3'] = 111001
+
+        for i in arr:
+            if x == i:
+                print(arr[i])
 
     # make multidimentional list to store feature values
     def CreateFeaturesMultiDimentionList(self, *arr, folderPath):
@@ -136,12 +149,12 @@ class Feature(object):
 
         # insert feature values to csv file
         try:
-            with open(csvFilePath, mode='w') as feature_file:
+            with open(csvFilePath, mode='w', newline='') as feature_file:
                 feature_writer = csv.writer(feature_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
                 for i in featureList:
                     # print(i)
-                    feature_writer.writerow(i)
+                    feature_writer.writerow(i+['Label'])
             successMessage = 1
         except:
             successMessage = 0
