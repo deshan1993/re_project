@@ -61,26 +61,17 @@ class Feature(object):
         hist_lbp = cv2.calcHist([img_lbp], [0], None, [256], [0, 256])
 
         image_feature_array = []
-        image_feature_array.insert(0,img)
+        image_feature_array.insert(0,img.split('.')[0]) # add image name for feature array
         for i in range(1,257):
             image_feature_array.insert(i,hist_lbp[i-1][0])
+        print("Happening...")
         return image_feature_array # image name + 256 textures
 
     def test(self):
         img = 'img_1_2_3.jpg'
-        x = '_'.join(img.split('_',2)[:2])
-        #x = img.split('_',2)[:2]
-
-        x = 'img_4'
-
-        arr = {}
-        arr['img_1'] = 111000
-        arr['img_2'] = 101111
-        arr['img_3'] = 111001
-
-        for i in arr:
-            if x == i:
-                print(arr[i])
+        #x = '_'.join(img.split('_',2)[:2])
+        x = img.split('.')[0]
+        print(x)
 
     # make multidimentional list to store feature values
     def CreateFeaturesMultiDimentionList(self, *arr, folderPath):
@@ -107,7 +98,7 @@ class Feature(object):
             if x == 0:
                 titleArray.insert(x, "ImageName")
             else:
-                title = 'value' + str(indexNum)
+                title = 'v_' + str(indexNum)
                 titleArray.insert(x, title)
             indexNum = indexNum + 1
         #print(titleArray)

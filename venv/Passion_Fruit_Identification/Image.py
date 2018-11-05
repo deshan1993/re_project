@@ -20,8 +20,15 @@ class Image(object):
         # horizontal images are rotated to vertical
         if height<width:
             img2 = np.rot90(img1)
-        # resize the image
-        resized_image1 = cv2.resize(img1, (400, 600))
+            # resize the image
+            resized_image1 = cv2.resize(img2, (400, 600))
+        else:
+            # resize the image
+            resized_image1 = cv2.resize(img1, (400, 600))
+        if height == width:
+            # resize the image
+            resized_image1 = cv2.resize(img1, (400, 600))
+
         # remove noise from colour image
         preprocessed_image = cv2.fastNlMeansDenoisingColored(resized_image1, None, 10, 10, 7, 21)
         cv2.imwrite('../images/Images_Preprocessed/' + img, preprocessed_image)

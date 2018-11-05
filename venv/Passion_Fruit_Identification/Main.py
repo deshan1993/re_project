@@ -19,7 +19,7 @@ class Main:
 
         #GUI
         root = tkinter.Tk()
-        root.geometry("400x200")
+        root.geometry("400x300")
         root.title("Passion Fruit Disease Identification")
 
         #function for load images from folder
@@ -58,11 +58,13 @@ class Main:
                 if len(ImagesName) - 1 == count:
                     messagebox.showinfo("Success", "Successfully Segmented")
 
-        #tset
-        def test():
+        # adding labels to csv files
+        def ladelAdding():
             label.allocateLabel()
 
-
+        # creating label adding file
+        def creatingLabelFile():
+            label.createLabelFile()
 
         def featureExtract():
 
@@ -150,6 +152,8 @@ class Main:
 
             #print(len(lab_features_list))
 
+        def test():
+            feature.test()
 
         preprocess_btn = Button(text="Preprocessing", command = preprocess)
         preprocess_btn.place(x=10,y=10)
@@ -160,8 +164,14 @@ class Main:
         segment_btn = Button(text="Feature Extraction", command=featureExtract)
         segment_btn.place(x=10, y=90)
 
-        test_btn = Button(text="Test", command=test)
-        test_btn.place(x=10, y=140)
+        crt_label_btn = Button(text="Creating Label File", command=creatingLabelFile)
+        crt_label_btn.place(x=10, y=130)
+
+        label_adding_btn = Button(text="Adding Label", command=ladelAdding)
+        label_adding_btn.place(x=10, y=170)
+
+        test_btn = Button(text="test", command=test)
+        test_btn.place(x=10, y=210)
         root.mainloop()
 
 

@@ -1,0 +1,31 @@
+# get all feature values to featureArray
+        with open("../Features/Original_images_features.csv") as feature:
+            featureList = csv.reader(feature)
+            for featureRow in featureList:
+                featuresArray.insert(index,featureRow)
+                index = index +1
+
+        #print(featuresArray[0][257])
+
+        # add label from label.csv
+        for x in range(0, len(featuresArray)-1):
+            imgName = '_'.join(featuresArray[count1][0].split('_', 2)[:2])
+            print(imgName)
+            with open("../Label/Label_file.csv") as label:
+                labelList = csv.reader(label)
+                for labelRow in labelList:
+                    if labelRow[0] == imgName:
+                        featuresArray[count1][257] = labelRow[1]
+            count1 += 1
+
+        # new labeled features save in the csv file
+        try:
+            with open("../Features/Original_images_features.csv", mode='w', newline='') as feature_file:
+                feature_writer = csv.writer(feature_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+                for i in featuresArray:
+                    # print(i)
+                    feature_writer.writerow(i)
+            successMessage = 1
+        except:
+            successMessage = 0
