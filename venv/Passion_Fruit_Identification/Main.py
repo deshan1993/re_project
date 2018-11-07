@@ -152,14 +152,27 @@ class Main:
 
             #print(len(lab_features_list))
 
+        # for basic purposes
+        def rename():
+            image.RenameImage()
+
+        def rotate():
+            image.RotateImages()
+
         def test():
-            feature.test()
+            print()
 
         preprocess_btn = Button(text="Preprocessing", command = preprocess)
         preprocess_btn.place(x=10,y=10)
 
+        rotate_btn = Button(text="Rotate Image", command=rotate)
+        rotate_btn.place(x=250, y=10)
+
         segment_btn = Button(text="Segmentation", command = segment)
         segment_btn.place(x=10, y=50)
+
+        rename_btn = Button(text="Rename Image", command=rename)
+        rename_btn.place(x=250, y=50)
 
         segment_btn = Button(text="Feature Extraction", command=featureExtract)
         segment_btn.place(x=10, y=90)

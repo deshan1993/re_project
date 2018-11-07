@@ -1,5 +1,6 @@
 import numpy as np
 import cv2 as cv2
+from tkinter import messagebox
 import matplotlib.pyplot
 import glob
 import os
@@ -109,5 +110,87 @@ class Image(object):
                     cv2.imwrite('../images/All_Segmented_Images/'+img_name+"_3_"+str(k)+img_ext, res2)
                     cv2.imwrite('../images/Segmented_images/Gray/' + img_name + "_3_" + str(k) + img_ext, res2)
         print(img_name + "'s segmentation was done")
+
+    def RotateImages(self):
+            originalImagesName = []
+            delImagesName = []
+            preImagesName = []
+            newImagesName = []
+            originalImgIndex = 0
+            index = 0
+            directory = '../Images/Rotate_image/'
+
+            try:
+                for root, dirs, files in os.walk("../Images/Rotate_image/"):
+
+                    for originalName in files:
+                        # originalImagesName.insert(originalImgIndex, originalName)
+                        img3 = cv2.imread("../Images/Rotate_image/" + originalName)
+                        height = np.size(img3, 0)
+                        width = np.size(img3, 1)
+                        if height != width:
+                            os.remove(os.path.join(directory, originalName))
+                    print("finish delete")
+
+                for root, dirs, files in os.walk("../Images/Rotate_image/"):
+
+                    for filename in files:
+                        # print(filename)
+                        preImagesName.insert(index, filename)
+                        img1 = cv2.imread("../Images/Rotate_image/" + preImagesName[index])
+                        img2 = np.rot90(img1)
+                        cv2.imwrite(os.path.join(directory, preImagesName[index]), img2)
+                        print(str(preImagesName[index]) + " was rotated")
+                        index += 1
+
+                    start_number = 4830  # number will be changed according to start number
+                    # start number is not started from 0
+                    for x in range(0, len(preImagesName)):
+                        before_name = 'img_'
+                        ext = '.jpg'
+                        newImagesName.insert(x, before_name + str(start_number) + ext)
+                        start_number += 1
+
+                    for x in range(0, len(preImagesName)):
+                        os.rename(os.path.join(directory, preImagesName[x]), os.path.join(directory, newImagesName[x]))
+                        print(str(newImagesName[x]) + " was renamed")
+
+                messagebox.showinfo("Success", "Successfully Rotated!")
+            except:
+                messagebox.showerror("Fail", "Error occured!")
+
+    def RenameImage(self):
+            # img = 'img_1_2_3.jpg'
+            # x = '_'.join(img.split('_',2)[:2])
+            # x = img.split('.')[0]
+
+            preImagesName = []
+            newImagesName = []
+            index = 0
+            directory = '../Images/Rename_images/'
+
+            try:
+                for root, dirs, files in os.walk("../Images/Rename_images/"):
+                    for filename in files:
+                        # print(filename)
+                        preImagesName.insert(index, filename)
+                        index += 1
+
+                    start_number = 4644  # number will be changed according to start number
+                    # start number is not started from 0
+                    for x in range(0, len(preImagesName)):
+                        # print(x)
+                        before_name = 'img_'
+                        ext = '.jpg'
+                        newImagesName.insert(x, before_name + str(start_number) + ext)
+                        start_number += 1
+
+                    for x in range(0, len(preImagesName)):
+                        os.rename(os.path.join(directory, preImagesName[x]), os.path.join(directory, newImagesName[x]))
+                        print(newImagesName[x])
+
+                messagebox.showinfo("Success", "Successfully renamed!")
+            except:
+                messagebox.showerror("Fail", "Error occured!")
 
 

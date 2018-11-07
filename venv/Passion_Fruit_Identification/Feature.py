@@ -2,8 +2,10 @@ import cv2 as cv2
 import numpy as np
 import matplotlib as plt
 import csv
+import os
 from tkinter import *
 from tkinter import messagebox
+from PIL import Image
 
 class Feature(object):
     
@@ -67,11 +69,75 @@ class Feature(object):
         print("Happening...")
         return image_feature_array # image name + 256 textures
 
-    def test(self):
-        img = 'img_1_2_3.jpg'
+    def test1(self):
+        #img = 'img_1_2_3.jpg'
         #x = '_'.join(img.split('_',2)[:2])
-        x = img.split('.')[0]
-        print(x)
+        #x = img.split('.')[0]
+
+        preImagesName = []
+        newImagesName = []
+        index = 0
+        directory = '../Images/Rename_images/'
+
+        try:
+            for root, dirs, files in os.walk("../Images/Rename_images/"):
+                for filename in files:
+                    # print(filename)
+                    preImagesName.insert(index, filename)
+                    index += 1
+
+                start_number = 1  # number will be changed according to start number
+                for x in range(0, len(preImagesName)):
+                    print(x)
+                    before_name = 'img_'
+                    ext = '.jpg'
+                    newImagesName.insert(x, before_name + str(start_number) + ext)
+                    start_number += 1
+
+                for x in range(0, len(preImagesName)):
+                    os.rename(os.path.join(directory, preImagesName[x]), os.path.join(directory, newImagesName[x]))
+                    print(newImagesName[x])
+
+            messagebox.showinfo("Success", "Successfully renamed!")
+        except:
+            messagebox.showerror("Fail", "Error occured!")
+
+    def test(self):
+        preImagesName = []
+        newImagesName = []
+        index = 0
+        directory = '../Images/Rotate_image/'
+
+
+        for root, dirs, files in os.walk("../Images/Rotate_image/"):
+            for filename in files:
+                # print(filename)
+                preImagesName.insert(index, filename)
+                img1 = cv2.imread("../Images/Rotate_image/" + preImagesName[index])
+                #img1.rotate(90)
+                #m = np.arange(8).reshape((2, 2, 2))
+                img2 = np.rot90(img1)
+                cv2.imwrite(os.path.join(directory, preImagesName[index]), img2)
+                print(preImagesName[index])
+                index += 1
+
+            start_number = 10  # number will be changed according to start number
+            for x in range(0, len(preImagesName)):
+                print(x)
+                before_name = 'img_'
+                ext = '.jpg'
+                newImagesName.insert(x, before_name + str(start_number) + ext)
+                start_number += 1
+
+            for x in range(0, len(preImagesName)):
+                os.rename(os.path.join(directory, preImagesName[x]), os.path.join(directory, newImagesName[x]))
+                print(newImagesName[x])
+
+            #messagebox.showinfo("Success", "Successfully renamed!")
+
+            #messagebox.showerror("Fail", "Error occured!")
+
+
 
     # make multidimentional list to store feature values
     def CreateFeaturesMultiDimentionList(self, *arr, folderPath):
