@@ -8,6 +8,8 @@ from tkinter import messagebox
 from Image import Image
 from Feature import Feature
 from Label import Label
+from SVM import SVM
+from LibSvm import LibSvm
 
 class Main:
 
@@ -16,10 +18,12 @@ class Main:
         image = Image()
         feature = Feature()
         label = Label()
+        svm = SVM()
+        libSvm = LibSvm()
 
         #GUI
         root = tkinter.Tk()
-        root.geometry("400x300")
+        root.geometry("500x450")
         root.title("Passion Fruit Disease Identification")
 
         #function for load images from folder
@@ -81,6 +85,7 @@ class Main:
             folderPathIndex = 0 # identify the folder path
             csvFilePathIndex = [] # identify csv file path
             success = 2
+            index = 1
 
             # get all images folder paths to feature extraction
             # foldersPath = ["../Images/Segmented_Images/Original/",
@@ -101,12 +106,14 @@ class Main:
                 if folderPath == "../Images/Segmented_Images/Gray/":
                     folderPathIndex = 3
                 if folderPath == "../Images/Segmented_Images/Original/":
-                    folderPathIndex = 4
+                     folderPathIndex = 4
 
                 imagesName = gettingImages(folderPath)
                 for imageName in imagesName:
+                    print("Image name: "+imageName+" was feature extracted ("+ str(index) +")")
                     count = count + 1
                     count1 = 0
+                    index += 1
 
                     feature_array = feature.FeatureExtraction(img_name=imageName, img_path=folderPath)
 
@@ -160,7 +167,52 @@ class Main:
             image.RotateImages()
 
         def test():
+            svm.test()
+
+        def test1():
+            libSvm.CreateModel()
+
+
+        # gray data set train and test functions
+        def trainGrayData1():
             print()
+
+        def trainGrayData2():
+            print()
+
+        def trainGrayData3():
+            print()
+
+        # HSV data set train and test functions
+        def trainHsvData1():
+            print()
+
+        def trainHsvData2():
+            print()
+
+        def trainHsvData3():
+            print()
+
+        # Lab data set train and test functions
+        def trainLabData1():
+            print()
+
+        def trainLabData2():
+            print()
+
+        def trainLabData3():
+            print()
+
+        # Original dataset train and test functions
+        def trainOriginalData1():
+            print()
+
+        def trainOriginalData2():
+            print()
+
+        def trainOriginalData3():
+            print()
+
 
         preprocess_btn = Button(text="Preprocessing", command = preprocess)
         preprocess_btn.place(x=10,y=10)
@@ -185,6 +237,50 @@ class Main:
 
         test_btn = Button(text="test", command=test)
         test_btn.place(x=10, y=210)
+
+        test_btn1 = Button(text="Multiclass", command=test1)
+        test_btn1.place(x=100, y=210)
+
+        # Gray data set train and test buttons
+        train_gray_btn = Button(text="Gray-Train & Test 1", command=trainGrayData1)
+        train_gray_btn.place(x=10, y=250)
+
+        train_gray_btn = Button(text="Gray-Train & Test 2", command=trainGrayData2)
+        train_gray_btn.place(x=150, y=250)
+
+        train_gray_btn = Button(text="Gray-Train & Test 3", command=trainGrayData3)
+        train_gray_btn.place(x=290, y=250)
+
+        # HSV data set train and test buttons
+        train_hsv_btn = Button(text="HSV-Train & Test 1", command=trainHsvData1)
+        train_hsv_btn.place(x=10, y=290)
+
+        train_hsv_btn = Button(text="HSV-Train & Test 2", command=trainHsvData2)
+        train_hsv_btn.place(x=150, y=290)
+
+        train_hsv_btn = Button(text="HSV-Train & Test 3", command=trainHsvData3)
+        train_hsv_btn.place(x=290, y=290)
+
+        # Lab data set train and test buttons
+        train_lab_btn = Button(text="Lab-Train & Test 1", command=trainLabData1)
+        train_lab_btn.place(x=10, y=330)
+
+        train_lab_btn = Button(text="Lab-Train & Test 2", command=trainLabData2)
+        train_lab_btn.place(x=150, y=330)
+
+        train_lab_btn = Button(text="Lab-Train & Test 3", command=trainLabData3)
+        train_lab_btn.place(x=290, y=330)
+
+        # Original data set train and test buttons
+        train_original_btn = Button(text="Original-Train & Test 1", command=trainOriginalData1)
+        train_original_btn.place(x=10, y=370)
+
+        train_original_btn = Button(text="Original-Train & Test 2", command=trainOriginalData2)
+        train_original_btn.place(x=150, y=370)
+
+        train_original_btn = Button(text="Original-Train & Test 3", command=trainOriginalData3)
+        train_original_btn.place(x=290, y=370)
+
         root.mainloop()
 
 

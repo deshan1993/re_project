@@ -22,13 +22,13 @@ class Image(object):
         if height<width:
             img2 = np.rot90(img1)
             # resize the image
-            resized_image1 = cv2.resize(img2, (400, 600))
+            resized_image1 = cv2.resize(img2, (200, 300))
         else:
             # resize the image
-            resized_image1 = cv2.resize(img1, (400, 600))
+            resized_image1 = cv2.resize(img1, (200, 300))
         if height == width:
             # resize the image
-            resized_image1 = cv2.resize(img1, (400, 600))
+            resized_image1 = cv2.resize(img1, (250, 250))
 
         # remove noise from colour image
         preprocessed_image = cv2.fastNlMeansDenoisingColored(resized_image1, None, 10, 10, 7, 21)
@@ -40,8 +40,8 @@ class Image(object):
         # colour pattern => 0=original, 1=Lab, 2=HSV, 3=Gray
         color_pattern = [0,1,2,3]
         imgName = img_name
-        img_name = imgName[0:5]
-        img_ext = imgName[5:9]
+        img_name = imgName.split('.')[0]
+        img_ext = '.' + imgName.split('.')[1]
 
         img = cv2.imread("../Images/Images_Preprocessed/" + imgName)
         orginal_image = img
@@ -97,7 +97,7 @@ class Image(object):
                     cv2.imwrite('../images/All_Segmented_Images/'+img_name+"_2_"+str(k)+img_ext, res2)
                     cv2.imwrite('../images/Segmented_images/HSV/' + img_name + "_2_" + str(k) + img_ext, res2)
                 if clrptn == 3:
-                    Z = gray_image.reshape((-1, 3))
+                    Z = gray_image.reshape((-1, 1)) # fix array error by using (-1,1) for (-1,3)
                     # convert to np.float32
                     Z = np.float32(Z)
                     # define criteria, number of clusters(K) and apply kmeans()
@@ -143,7 +143,7 @@ class Image(object):
                         print(str(preImagesName[index]) + " was rotated")
                         index += 1
 
-                    start_number = 4830  # number will be changed according to start number
+                    start_number = 1163  # number will be changed according to start number
                     # start number is not started from 0
                     for x in range(0, len(preImagesName)):
                         before_name = 'img_'
@@ -176,7 +176,7 @@ class Image(object):
                         preImagesName.insert(index, filename)
                         index += 1
 
-                    start_number = 4644  # number will be changed according to start number
+                    start_number = 370  # number will be changed according to start number
                     # start number is not started from 0
                     for x in range(0, len(preImagesName)):
                         # print(x)

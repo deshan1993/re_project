@@ -1,5 +1,6 @@
 import numpy as np
 import cv2 as cv2
+import datetime
 import os
 import tkinter
 import csv
@@ -17,6 +18,69 @@ class Label(object):
                 imagesName.append(filename.split('.',1)[0])
         #print(imagesName)
         return imagesName
+
+    # insert label to label.csv file
+    def InsertLabels(self):
+        # A = Non-disease
+        # B = Mild_Scab
+        # C = Moderate_Scab
+        # D = Severe_Scab
+        # E = Mild_Woodiness
+        # F = Moderate_Woodiness
+        # G = Severe_Woodiness
+        labelsArray = ['A','B','C','D','E','F','G']
+        path = "../Label/Label_file.csv"
+        labelNewArray = []
+        index = 0
+
+        with open(path) as labels:
+            labelList = csv.reader(labels)
+            for labelRow in labelList:
+                #featuresArray.insert(index, featureRow)
+                labelNewArray.insert(index, labelRow)
+                index = index + 1
+
+            for x in range(1, len(labelNewArray)):
+                labelName = labelNewArray[x][0]
+                lName = labelName.split('_')
+                firstCharacter = lName[0]
+                secondCharacter = lName[1]
+                fullName = firstCharacter+'_'+secondCharacter
+
+                if 0 < int(secondCharacter) and int(secondCharacter) <= 13:
+                    labelNewArray[x][1] = labelsArray[0]
+                    print(labelName)
+
+                if 13 < int(secondCharacter) and int(secondCharacter) <= 47:
+                    labelNewArray[x][1] = labelsArray[1]
+                    print(labelName)
+
+                if 47 < int(secondCharacter) and int(secondCharacter) <= 87:
+                    labelNewArray[x][1] = labelsArray[2]
+                    print(labelName)
+
+                # if 144 < int(secondCharacter) and int(secondCharacter) <= 182:
+                #     labelNewArray[x][1] = labelsArray[3]
+                #     print(labelName)
+                #
+                # if 182 < int(secondCharacter) and int(secondCharacter) <= 234:
+                #     labelNewArray[x][1] = labelsArray[4]
+                #     print(labelName)
+                #
+                # if 234 < int(secondCharacter) and int(secondCharacter) <= 294:
+                #     labelNewArray[x][1] = labelsArray[5]
+                #     print(labelName)
+                #
+                # if 294 < int(secondCharacter) and int(secondCharacter) <= 342:
+                #     labelNewArray[x][1] = labelsArray[6]
+                #     print(labelName)
+
+        with open(path, mode='w', newline='') as newLabelFile:
+            new_label_writer = csv.writer(newLabelFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+            for i in labelNewArray:
+                # print(i)
+                new_label_writer.writerow(i)
 
     # show success or failure alert
     def successOrFail(self, value, type):
@@ -48,8 +112,9 @@ class Label(object):
                 label_writer.writerow(['Name', 'Label'])
                 for i in imagesName:
                     # print(i)
-                    label_writer.writerow(i.split())
-                successMessage = 1
+                    label_writer.writerow(i.split()+['label'])
+            Label.InsertLabels(self)
+            successMessage = 1
         except:
             successMessage = 0
 
@@ -86,7 +151,7 @@ class Label(object):
                 # print(featuresArray[0][257])
 
                 # add label from label.csv
-                for x in range(0, len(featuresArray) - 1):
+                for x in range(0, len(featuresArray) - 1): #fault has to fix
                     imgName = '_'.join(featuresArray[count1][0].split('_', 2)[:2])
                     # print(imgName)
                     with open("../Label/Label_file.csv") as label:
@@ -104,8 +169,11 @@ class Label(object):
                     for i in featuresArray:
                         # print(i)
                         feature_writer.writerow(i)
+                        print(i[0])
                 successMessage = 1
+
             except:
                 successMessage = 0
 
         Label.successOrFail(self, value=successMessage, type=2)
+

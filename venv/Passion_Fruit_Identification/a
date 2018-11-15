@@ -30,8 +30,6 @@
         except:
             successMessage = 0
 
-
-
             def RotateImages(self):
             delImagesName = []
             preImagesName = []
@@ -65,3 +63,64 @@
                 messagebox.showinfo("Success", "Successfully Rotated!")
             except:
                 messagebox.showerror("Fail", "Error occured!")
+
+
+
+# training set create
+        xtrain=data[0:3343,1:]
+        train_label = data[0:3343,257]
+
+        clf.fit(xtrain,train_label)
+
+        # testing data
+        xtest = data[3343:,1:]
+        actual_label = data[3343:,257]
+
+        p = clf.predict(xtest)
+        print(p)
+
+        count = 0
+        # for i in range(0,3343):
+        #     if p[i] == actual_label[i]
+        #         count += 1
+        #     else:
+        #         count = 0
+
+        print("Accuracy= "+(count/3343)*100)
+
+
+#data = pd.read_csv("../Features/Gray_features.csv")
+        #print(type(data))
+        #print(data)
+
+        labelNewArray = []
+        index = 0
+        path = "../Features/Gray_features.csv"
+
+        with open(path) as labels:
+            labelList = csv.reader(labels)
+            for labelRow in labelList:
+                # featuresArray.insert(index, featureRow)
+                labelNewArray.insert(index, labelRow)
+                index = index + 1
+        clf = SVC()
+
+        xtrain = labelNewArray[0:3343, 1:256]
+        train_label = labelNewArray[0:3343, 257]
+
+        clf.fit(xtrain,train_label)
+
+        xTest = labelNewArray[3343:, 1:256]
+        actual_label = labelNewArray[3343: , 257]
+
+        p = clf.predict(xTest)
+
+        count = 0
+
+        for i in range(0, 3343):
+            if p[i] == actual_label[i]:
+                count +=1
+            else:
+                count = 0
+
+        print("Accuracy="+str((count/3343)*100))

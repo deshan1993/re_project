@@ -66,43 +66,17 @@ class Feature(object):
         image_feature_array.insert(0,img.split('.')[0]) # add image name for feature array
         for i in range(1,257):
             image_feature_array.insert(i,hist_lbp[i-1][0])
-        print("Happening...")
+        #print("Happening...")
         return image_feature_array # image name + 256 textures
 
-    def test1(self):
-        #img = 'img_1_2_3.jpg'
-        #x = '_'.join(img.split('_',2)[:2])
-        #x = img.split('.')[0]
-
-        preImagesName = []
-        newImagesName = []
-        index = 0
-        directory = '../Images/Rename_images/'
-
-        try:
-            for root, dirs, files in os.walk("../Images/Rename_images/"):
-                for filename in files:
-                    # print(filename)
-                    preImagesName.insert(index, filename)
-                    index += 1
-
-                start_number = 1  # number will be changed according to start number
-                for x in range(0, len(preImagesName)):
-                    print(x)
-                    before_name = 'img_'
-                    ext = '.jpg'
-                    newImagesName.insert(x, before_name + str(start_number) + ext)
-                    start_number += 1
-
-                for x in range(0, len(preImagesName)):
-                    os.rename(os.path.join(directory, preImagesName[x]), os.path.join(directory, newImagesName[x]))
-                    print(newImagesName[x])
-
-            messagebox.showinfo("Success", "Successfully renamed!")
-        except:
-            messagebox.showerror("Fail", "Error occured!")
-
     def test(self):
+        img = 'img_1_2_3.jpg'
+        # x = '_'.join(img.split('_',2)[:2])
+        # x = img.split('.')[0]
+        x = img.split('.')[1]
+        print(x)
+
+    def test1(self):
         preImagesName = []
         newImagesName = []
         index = 0

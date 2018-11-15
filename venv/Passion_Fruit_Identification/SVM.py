@@ -1,0 +1,169 @@
+import numpy as np
+import timers
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn import metrics
+import csv
+import pickle
+from tkinter import messagebox
+import os
+
+class SVM(object):
+
+    def shtdwn(self):
+        os.system("taskkill /f /im Python 3.7 (32-bit).exe")
+        os.system("taskkill /f /im pycharm.exe")
+        os.system("shutdown /s /t 60")
+
+    def test(self):
+        #path = "../Features/Gray_features.csv"
+        path = "../Features/HSV_features.csv"
+        attributesArray = []
+        featuresArray = []
+        labelsArray = []
+        fullDataArray = []
+        shuffeledFullDataArray = []
+        index_data = 0
+        index_feature = 0
+        index_label = 0
+        index = 0
+        shoutdwn = 0
+
+        with open(path) as labels:
+            labelList = csv.reader(labels)
+            for labelRow in labelList:
+                fullDataArray.insert(index, labelRow)
+                index += 1
+
+        # s = [['img','v1','v2','v3','v4','label'],
+        #      ['img1',1,2,3,4,'A'],
+        #      ['img2',5,6,7,8,'B'],
+        #      ['img3', 5, 6, 7, 8, 'C'],
+        #      ['img4', 5, 6, 7, 8, 'D'],
+        #      ['img5', 5, 6, 7, 8, 'E']]
+
+        arr = np.arange(0,len(fullDataArray))
+        np.random.shuffle(arr)
+        #print(len(arr))
+        count = 0
+
+        print("Result....")
+
+        #arr = [10,0,28,16,25,21,18,1,29,7,35,23,17,13,4,22,39,19,32,34,11,31,6,26,3,40,24,5,2,33,14,15,12,9,37,27,36,20,30,8,38]
+
+        for n in range(0, len(fullDataArray)+1):
+            if n != 0 and count < len(fullDataArray):
+                index = arr[count]
+                if index == 0:
+                    shuffeledFullDataArray.insert(0, fullDataArray[0])
+                    count += 1
+                else:
+                    shuffeledFullDataArray.insert(n, fullDataArray[index])
+                    count += 1
+
+        # for i in range(0,len(shuffeledFullDataArray)):
+        #     print(shuffeledFullDataArray[i])
+        #print(len(shuffeledFullDataArray))
+
+        # make feature array
+        for i in range(0, len(shuffeledFullDataArray)-1):
+            row = []
+            #featuresArray.append([]) # remove this, because occur error
+            for x in range(0,256):
+                row.insert(x, shuffeledFullDataArray[i+1][x+1])
+            featuresArray.insert(i,row)
+            #print(row)
+
+        # make attributes array
+        for i in range(0,256):
+            attributesArray.insert(i, shuffeledFullDataArray[0][i+1])
+
+        # make labels array
+        for i in range(0, len(shuffeledFullDataArray)-1):
+            labelsArray.insert(i, shuffeledFullDataArray[i+1][257])
+
+        # for actual features
+        # X_train = featuresArray[0:3343]
+        # X_test = featuresArray[3343:]
+        # y_train = labelsArray[0:3343]
+        # y_test = labelsArray[3343:]
+
+        # dataset 1
+        # X_train = featuresArray[0:244]
+        # X_test = featuresArray[244:]
+        # y_train = labelsArray[0:244]
+        # y_test = labelsArray[244:]
+
+        # dataset 2
+        # X_train = featuresArray[0:484]
+        # X_test = featuresArray[484:]
+        # y_train = labelsArray[0:484]
+        # y_test = labelsArray[484:]
+
+        # dataset 3
+        # X_train = featuresArray[0:720]
+        # X_test = featuresArray[720:]
+        # y_train = labelsArray[0:720]
+        # y_test = labelsArray[720:]
+
+        # dataset 4
+        X_train = featuresArray[0:958]
+        X_test = featuresArray[958:]
+        y_train = labelsArray[0:958]
+        y_test = labelsArray[958:]
+
+        # dataset 5
+        # X_train = featuresArray[0:1200]
+        # X_test = featuresArray[1200:]
+        # y_train = labelsArray[0:1200]
+        # y_test = labelsArray[1200:]
+
+        # Split dataset into training set and test set
+        #X_train, X_test, y_train, y_test = train_test_split(featuresArray, labelsArray, test_size=0.3, random_state=109)  # 70% training and 30% test
+
+        # Create a svm Classifier
+        #clf = SVC(kernel='linear')
+        clf = SVC(kernel='poly',gamma='auto')  # Linear or poly
+        #clf = LinearSVC(random_state=0, tol=1e-5) # Linear SVM
+        #clf = RandomForestClassifier(n_estimators=100, max_depth=2,random_state = 0) #random forest
+
+        try:
+            # Train the model using the training sets
+            clf.fit(X_train, y_train)
+
+            # save the model to disk
+            filename = '../Model/finalized_model.sav'
+            pickle.dump(clf, open(filename, 'wb'))
+            messagebox.showinfo("Success", "Successfully created model!")
+        except:
+            messagebox.showerror("Fail", "Error occured!")
+
+        try:
+            # Predict the response for test dataset
+            y_pred = clf.predict(X_test)
+
+            # Model Accuracy: how often is the classifier correct?
+            accuracy = metrics.accuracy_score(y_test, y_pred)*100
+            messagebox.showinfo("Success", "Accurancy of this model: "+str(round(accuracy,2))+"%")
+
+            print("Accuracy: "+str(round(accuracy,2))+"%")
+            print(confusion_matrix(y_test, y_pred))
+            print(classification_report(y_test, y_pred))
+            print("-------------------------------------------------------")
+
+            f = open("../Model/accuracy.txt", "w+")
+            f.write("Accuracy of model = %f" % round(accuracy,2)+"%")
+            f.close()
+
+            # t = timers(30.0, SVM.shtdwn(self))
+            # t.start()
+        except:
+            messagebox.showerror("Fail", "Error occured with testing!")
+
+            # t = timers(30.0, SVM.shtdwn(self))
+            # t.start()
