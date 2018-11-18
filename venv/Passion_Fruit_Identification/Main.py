@@ -166,52 +166,35 @@ class Main:
         def rotate():
             image.RotateImages()
 
-        def test():
-            svm.test()
+        def trainModel():
+            activity = 'train'
+            svm.createModel()
 
-        def test1():
-            libSvm.CreateModel()
+        def testModel():
+            activity = 'test'
+            aCount = 0
+            bCount = 0
+            cCount = 0
 
+            for i in range(0,1000):
+                label = svm.testModel()
+               # print(label)
+                if label == 'A':
+                    aCount += 1
+                if label == 'B':
+                    bCount += 1
+                if label == 'C':
+                    cCount += 1
 
-        # gray data set train and test functions
-        def trainGrayData1():
-            print()
-
-        def trainGrayData2():
-            print()
-
-        def trainGrayData3():
-            print()
-
-        # HSV data set train and test functions
-        def trainHsvData1():
-            print()
-
-        def trainHsvData2():
-            print()
-
-        def trainHsvData3():
-            print()
-
-        # Lab data set train and test functions
-        def trainLabData1():
-            print()
-
-        def trainLabData2():
-            print()
-
-        def trainLabData3():
-            print()
-
-        # Original dataset train and test functions
-        def trainOriginalData1():
-            print()
-
-        def trainOriginalData2():
-            print()
-
-        def trainOriginalData3():
-            print()
+            if (aCount >= bCount) and (aCount >= cCount):
+                print("Non disease")
+                messagebox.showinfo("Success", "Non-disease")
+            elif (bCount >= aCount) and (bCount >= cCount):
+                print("Scab disease")
+                messagebox.showinfo("Success", "Scab disease")
+            else:
+                print("Woodiness disease")
+                messagebox.showinfo("Success", "Woodiness disease")
 
 
         preprocess_btn = Button(text="Preprocessing", command = preprocess)
@@ -235,51 +218,11 @@ class Main:
         label_adding_btn = Button(text="Adding Label", command=ladelAdding)
         label_adding_btn.place(x=10, y=170)
 
-        test_btn = Button(text="test", command=test)
-        test_btn.place(x=10, y=210)
+        test_btn = Button(text="Train", command=trainModel)
+        test_btn.place(x=10, y=250)
 
-        test_btn1 = Button(text="Multiclass", command=test1)
-        test_btn1.place(x=100, y=210)
-
-        # Gray data set train and test buttons
-        train_gray_btn = Button(text="Gray-Train & Test 1", command=trainGrayData1)
-        train_gray_btn.place(x=10, y=250)
-
-        train_gray_btn = Button(text="Gray-Train & Test 2", command=trainGrayData2)
-        train_gray_btn.place(x=150, y=250)
-
-        train_gray_btn = Button(text="Gray-Train & Test 3", command=trainGrayData3)
-        train_gray_btn.place(x=290, y=250)
-
-        # HSV data set train and test buttons
-        train_hsv_btn = Button(text="HSV-Train & Test 1", command=trainHsvData1)
-        train_hsv_btn.place(x=10, y=290)
-
-        train_hsv_btn = Button(text="HSV-Train & Test 2", command=trainHsvData2)
-        train_hsv_btn.place(x=150, y=290)
-
-        train_hsv_btn = Button(text="HSV-Train & Test 3", command=trainHsvData3)
-        train_hsv_btn.place(x=290, y=290)
-
-        # Lab data set train and test buttons
-        train_lab_btn = Button(text="Lab-Train & Test 1", command=trainLabData1)
-        train_lab_btn.place(x=10, y=330)
-
-        train_lab_btn = Button(text="Lab-Train & Test 2", command=trainLabData2)
-        train_lab_btn.place(x=150, y=330)
-
-        train_lab_btn = Button(text="Lab-Train & Test 3", command=trainLabData3)
-        train_lab_btn.place(x=290, y=330)
-
-        # Original data set train and test buttons
-        train_original_btn = Button(text="Original-Train & Test 1", command=trainOriginalData1)
-        train_original_btn.place(x=10, y=370)
-
-        train_original_btn = Button(text="Original-Train & Test 2", command=trainOriginalData2)
-        train_original_btn.place(x=150, y=370)
-
-        train_original_btn = Button(text="Original-Train & Test 3", command=trainOriginalData3)
-        train_original_btn.place(x=290, y=370)
+        test_btn1 = Button(text="Test", command=testModel)
+        test_btn1.place(x=100, y=250)
 
         root.mainloop()
 
