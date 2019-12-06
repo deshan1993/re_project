@@ -64,6 +64,12 @@ class SVM(object):
         for i in range(0, len(shuffeledFullDataArray)-1):
             labelsArray.insert(i, shuffeledFullDataArray[i+1][257])
 
+        # for sample dataset
+        X_train = featuresArray[0:7]
+        X_test = featuresArray[7:]
+        y_train = labelsArray[0:7]
+        y_test = labelsArray[7:]
+
         # for actual features
         # X_train = featuresArray[0:3343]
         # X_test = featuresArray[3343:]
@@ -71,10 +77,10 @@ class SVM(object):
         # y_test = labelsArray[3343:]
 
         # dataset 1
-        X_train = featuresArray[0:244]
-        X_test = featuresArray[244:]
-        y_train = labelsArray[0:244]
-        y_test = labelsArray[244:]
+        # X_train = featuresArray[0:244]
+        # X_test = featuresArray[244:]
+        # y_train = labelsArray[0:244]
+        # y_test = labelsArray[244:]
 
         # dataset 2
         # X_train = featuresArray[0:484]

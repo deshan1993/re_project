@@ -1,1 +1,1 @@
-Accuracy of model = 61.540000%
+Accuracy of model = 51.520000%

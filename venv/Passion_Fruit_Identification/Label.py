@@ -47,15 +47,15 @@ class Label(object):
                 secondCharacter = lName[1]
                 fullName = firstCharacter+'_'+secondCharacter
 
-                if 0 < int(secondCharacter) and int(secondCharacter) <= 13:
+                if 0 < int(secondCharacter) and int(secondCharacter) <= 3:
                     labelNewArray[x][1] = labelsArray[0]
                     print(labelName)
 
-                if 13 < int(secondCharacter) and int(secondCharacter) <= 47:
+                if 3 < int(secondCharacter) and int(secondCharacter) <= 6:
                     labelNewArray[x][1] = labelsArray[1]
                     print(labelName)
 
-                if 47 < int(secondCharacter) and int(secondCharacter) <= 87:
+                if 6 < int(secondCharacter) and int(secondCharacter) <= 10:
                     labelNewArray[x][1] = labelsArray[2]
                     print(labelName)
 
